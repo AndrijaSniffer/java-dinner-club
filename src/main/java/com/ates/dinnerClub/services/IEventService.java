@@ -3,6 +3,7 @@ package com.ates.dinnerClub.services;
 import com.ates.dinnerClub.classes.dto.event.CreateEventDTO;
 import com.ates.dinnerClub.classes.dto.event.EventDTO;
 import com.ates.dinnerClub.classes.dto.event.UpdateEventDTO;
+import com.ates.dinnerClub.classes.dto.guest.GuestDTO;
 import com.ates.dinnerClub.classes.enums.EventStatus;
 import com.ates.dinnerClub.entities.Event;
 
@@ -16,6 +17,8 @@ public interface IEventService {
     Event getEventByIdForCreation(int id);
 
     List<EventDTO> getEventsByStatus(EventStatus status);
+
+    List<GuestDTO> getGuestsByEventId(int id);
 
     EventDTO createEvent(CreateEventDTO event);
 

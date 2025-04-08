@@ -3,6 +3,7 @@ package com.ates.dinnerClub.services.implementations;
 import com.ates.dinnerClub.classes.dto.event.CreateEventDTO;
 import com.ates.dinnerClub.classes.dto.event.EventDTO;
 import com.ates.dinnerClub.classes.dto.event.UpdateEventDTO;
+import com.ates.dinnerClub.classes.dto.guest.GuestDTO;
 import com.ates.dinnerClub.classes.enums.EventStatus;
 import com.ates.dinnerClub.entities.Event;
 import com.ates.dinnerClub.repositories.IEventRepo;
@@ -46,6 +47,11 @@ public class EventService implements IEventService {
     @Override
     public List<EventDTO> getEventsByStatus(EventStatus status) {
         return this.eventRepository.findAllByStatus(status).stream().map(EventDTO::new).toList();
+    }
+
+    @Override
+    public List<GuestDTO> getGuestsByEventId(int id) {
+        return this.eventRepository.findAllGuestsByEventId(id).stream().map(GuestDTO::new).toList();
     }
 
     @Override
