@@ -33,6 +33,7 @@ public class ThemeController {
     )
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Themes retrieved successfully", content = @Content(schema = @Schema(implementation = ThemeDTO[].class))),
+            @ApiResponse(responseCode = "400", description = "Bad request", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
             @ApiResponse(responseCode = "500", description = "Internal server error", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
     })
     public ResponseEntity<List<ThemeDTO>> getAllThemes() {
@@ -46,6 +47,7 @@ public class ThemeController {
     )
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Theme successfully returned", content = @Content(schema = @Schema(implementation = ThemeDTO.class))),
+            @ApiResponse(responseCode = "400", description = "Bad request", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
             @ApiResponse(responseCode = "404", description = "Theme not found", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
             @ApiResponse(responseCode = "500", description = "Internal server error", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
@@ -88,6 +90,7 @@ public class ThemeController {
     )
     @ApiResponses({
             @ApiResponse(responseCode = "204", description = "Default response, it returns no matter what"),
+            @ApiResponse(responseCode = "400", description = "Bad request", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
     })
     public ResponseEntity<Void> deleteTheme(@PathVariable @Min(1) int id) {
         this.themeService.deleteTheme(id);
