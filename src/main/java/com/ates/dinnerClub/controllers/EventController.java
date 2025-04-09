@@ -3,9 +3,10 @@ package com.ates.dinnerClub.controllers;
 import com.ates.dinnerClub.classes.dto.event.CreateEventDTO;
 import com.ates.dinnerClub.classes.dto.event.EventDTO;
 import com.ates.dinnerClub.classes.dto.event.UpdateEventDTO;
-import com.ates.dinnerClub.classes.dto.guest.GuestDTO;
+import com.ates.dinnerClub.classes.dto.guest.GuestInvitationDTO;
 import com.ates.dinnerClub.classes.enums.EventStatus;
 import com.ates.dinnerClub.services.IEventService;
+import com.ates.dinnerClub.services.implementations.EventService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,7 +19,7 @@ import java.util.List;
 public class EventController {
     private final IEventService eventService;
 
-    public EventController(IEventService eventService) {
+    public EventController(EventService eventService) {
         this.eventService = eventService;
     }
 
@@ -38,8 +39,13 @@ public class EventController {
     }
 
     @GetMapping("/{id}/guests")
-    public ResponseEntity<List<GuestDTO>> getGuestsByEventId(@PathVariable int id) {
+    public ResponseEntity<List<GuestInvitationDTO>> getGuestsByEventId(@PathVariable int id) {
         return ResponseEntity.ok(this.eventService.getGuestsByEventId(id));
+    }
+
+    @GetMapping("/{id}/guests/without-attendance")
+    public ResponseEntity<List<GuestInvitationDTO>> getGuestsWithoutAttendanceByEventId(@PathVariable int id) {
+        return ResponseEntity.ok(this.eventService.getGuestsWithoutAttendanceByEventId(id));
     }
 
     @PostMapping()

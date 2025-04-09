@@ -18,11 +18,9 @@ public class UpdateEventDTO {
     private EventStatus status;
     private int theme;
 
-    public UpdateEventDTO(Event event) {
-        this.id = event.getId();
-        this.location = event.getLocation();
-        this.date = event.getDate();
-        this.status = event.getStatus();
-        this.theme = event.getTheme().getId();
+    public boolean compareToEntity(Event event) {
+        return this.getId() == event.getId() && this.getLocation().equals(event.getLocation())
+                && this.getDate().equals(event.getDate()) && this.getStatus().equals(event.getStatus())
+                && this.getTheme() == event.getTheme().getId();
     }
 }
