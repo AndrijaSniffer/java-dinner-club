@@ -1,9 +1,10 @@
 package com.ates.dinnerClub.services.implementations;
 
+import com.ates.dinnerClub.classes.dto.theme.CreateThemeDTO;
+import com.ates.dinnerClub.classes.dto.theme.ThemeDTO;
 import com.ates.dinnerClub.entities.Theme;
 import com.ates.dinnerClub.repositories.IThemeRepo;
 import com.ates.dinnerClub.services.IThemeService;
-import jakarta.validation.constraints.NotNull;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,30 +18,17 @@ public class ThemeService implements IThemeService {
     }
 
     @Override
-    public Theme addTheme(String name) {
-        if (name != null && !name.isEmpty()) {
-            Theme theme = new Theme();
-            theme.setName(name);
-            return this.themeRepo.save(theme);
-        }
-        return null;
+    public List<ThemeDTO> getAllThemes() {
+        return this.themeRepo.findAll().stream().map(ThemeDTO::new).toList();
     }
 
     @Override
-    public void deleteTheme(int id) {
-        this.themeRepo.deleteById(id);
+    public ThemeDTO getThemeById(int id) {
+        return this.themeRepo.findById(id).map(ThemeDTO::new).orElseThrow();
     }
 
     @Override
-    public Theme updateTheme(@NotNull Theme theme) {
-        if (theme.getId() > 0 && theme.getName() != null && !theme.getName().isEmpty()) {
-            return this.themeRepo.save(theme);
-        }
-        return null;
-    }
-
-    @Override
-    public Theme getThemeById(int id) {
+    public Theme getThemeByIdForCreation(int id) {
         if (id > 0) {
             return this.themeRepo.findById(id).orElseThrow();
         }
@@ -48,7 +36,31 @@ public class ThemeService implements IThemeService {
     }
 
     @Override
-    public List<Theme> getAllThemes() {
-        return this.themeRepo.findAll();
+    public ThemeDTO addTheme(CreateThemeDTO theme) {
+        if (theme != null) {
+            Theme themeEntity = new Theme();
+            themeEntity.setName(theme.getName());
+
+            return new ThemeDTO(this.themeRepo.save(themeEntity));
+        } else {
+            throw new IllegalArgumentException("Theme is null");
+        }
+    }
+
+    @Override
+    public ThemeDTO updateTheme(ThemeDTO theme) {
+        if (theme != null) {
+            Theme themeEntity = this.themeRepo.findById(theme.getId()).orElseThrow();
+            themeEntity.setName(theme.getName());
+
+            return new ThemeDTO(this.themeRepo.save(themeEntity));
+        } else {
+            throw new IllegalArgumentException("Theme is null");
+        }
+    }
+
+    @Override
+    public void deleteTheme(int id) {
+        this.themeRepo.deleteById(id);
     }
 }

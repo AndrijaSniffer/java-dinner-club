@@ -1,9 +1,8 @@
 package com.ates.dinnerClub.controllers;
 
-import com.ates.dinnerClub.classes.dto.theme.CreateThemeDTO;
 import com.ates.dinnerClub.classes.dto.ErrorResponse;
+import com.ates.dinnerClub.classes.dto.theme.CreateThemeDTO;
 import com.ates.dinnerClub.classes.dto.theme.ThemeDTO;
-import com.ates.dinnerClub.entities.Theme;
 import com.ates.dinnerClub.services.IThemeService;
 import com.ates.dinnerClub.services.implementations.ThemeService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -12,10 +11,10 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -37,14 +36,7 @@ public class ThemeController {
             @ApiResponse(responseCode = "500", description = "Internal server error", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
     })
     public ResponseEntity<List<ThemeDTO>> getAllThemes() {
-        List<Theme> themes = this.themeService.getAllThemes();
-        List<ThemeDTO> themeDTOs = new ArrayList<>();
-
-        for (Theme theme : themes) {
-            themeDTOs.add(new ThemeDTO(theme));
-        }
-
-        return ResponseEntity.ok(themeDTOs);
+        return ResponseEntity.ok(this.themeService.getAllThemes());
     }
 
     @GetMapping("/{id}")
@@ -54,13 +46,11 @@ public class ThemeController {
     )
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Theme successfully returned", content = @Content(schema = @Schema(implementation = ThemeDTO.class))),
-            @ApiResponse(responseCode = "404", description = "Theme not found", content = @Content(schema = @Schema(implementation = ResponseEntity.class))),
+            @ApiResponse(responseCode = "404", description = "Theme not found", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
             @ApiResponse(responseCode = "500", description = "Internal server error", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
-    public ResponseEntity<ThemeDTO> getThemeById(@PathVariable int id) {
-        Theme theme = this.themeService.getThemeById(id);
-
-        return ResponseEntity.ok(new ThemeDTO(theme.getId(), theme.getName()));
+    public ResponseEntity<ThemeDTO> getThemeById(@PathVariable @Min(1) int id) {
+        return ResponseEntity.ok(this.themeService.getThemeById(id));
     }
 
     @PostMapping()
@@ -72,15 +62,8 @@ public class ThemeController {
             @ApiResponse(responseCode = "200", description = "Theme created successfully", content = @Content(schema = @Schema(implementation = ThemeDTO.class))),
             @ApiResponse(responseCode = "400", description = "Invalid request or duplicate theme name", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
-    public ResponseEntity<?> addTheme(@RequestBody @Valid CreateThemeDTO dto) {
-        Theme createdTheme = this.themeService.addTheme(dto.getName());
-
-        if (createdTheme == null) {
-            throw new IllegalArgumentException();
-        } else {
-            ThemeDTO themeDTO = new ThemeDTO(createdTheme.getId(), createdTheme.getName());
-            return ResponseEntity.ok(themeDTO);
-        }
+    public ResponseEntity<ThemeDTO> addTheme(@RequestBody @Valid CreateThemeDTO themeDTO) {
+        return ResponseEntity.ok(this.themeService.addTheme(themeDTO));
     }
 
     @PutMapping()
@@ -91,33 +74,22 @@ public class ThemeController {
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Theme updated successfully", content = @Content(schema = @Schema(implementation = ThemeDTO.class))),
             @ApiResponse(responseCode = "400", description = "Invalid request or duplicate theme name", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
-            @ApiResponse(responseCode = "404", description = "Theme not found", content = @Content(schema = @Schema(implementation = ResponseEntity.class))),
+            @ApiResponse(responseCode = "404", description = "Theme not found", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
             @ApiResponse(responseCode = "500", description = "Internal server error", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
-    public ResponseEntity<?> updateTheme(@RequestBody @Valid ThemeDTO dto) {
-        Theme theme = this.themeService.getThemeById(dto.getId());
-        theme.setName(dto.getName());
-
-        Theme newTheme = this.themeService.updateTheme(theme);
-
-        if (newTheme == null) {
-            throw new IllegalArgumentException();
-        } else {
-            return ResponseEntity.ok(newTheme);
-        }
+    public ResponseEntity<ThemeDTO> updateTheme(@RequestBody @Valid ThemeDTO themeDTO) {
+        return ResponseEntity.ok(this.themeService.updateTheme(themeDTO));
     }
 
     @DeleteMapping("/{id}")
     @Operation(
             summary = "Delete a theme",
-            description = "Deletes a theme by it's ID. Returns 404 if no theme is found."
+            description = "Deletes a theme by it's ID."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "204", description = "Theme deleted successfully"),
-            @ApiResponse(responseCode = "404", description = "Theme not found", content = @Content(schema = @Schema(implementation = ResponseEntity.class))),
-            @ApiResponse(responseCode = "500", description = "Internal server error", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+            @ApiResponse(responseCode = "204", description = "Default response, it returns no matter what"),
     })
-    public ResponseEntity<?> deleteTheme(@PathVariable int id) {
+    public ResponseEntity<Void> deleteTheme(@PathVariable @Min(1) int id) {
         this.themeService.deleteTheme(id);
 
         return ResponseEntity.noContent().build();

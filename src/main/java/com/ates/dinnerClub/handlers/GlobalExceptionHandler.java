@@ -4,8 +4,10 @@ import com.ates.dinnerClub.classes.dto.ErrorResponse;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.method.annotation.HandlerMethodValidationException;
 
 import java.util.NoSuchElementException;
 
@@ -28,6 +30,23 @@ public class GlobalExceptionHandler {
     // Temporary exception handler for invalid requests
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<ErrorResponse> handleInvalidRequest(IllegalArgumentException e) {
+        return ResponseEntity.badRequest().body(
+                new ErrorResponse(e.getClass().getName(), e.getMessage())
+        );
+    }
+
+    // Handler for inner class property exceptions
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ErrorResponse> handleValidationErrors(MethodArgumentNotValidException e) {
+        return ResponseEntity.badRequest().body(
+                new ErrorResponse(e.getClass().getName(), String.format("Field: %s; Error: %s", e.getBindingResult().getFieldErrors().getFirst().getField(),
+                        e.getBindingResult().getFieldErrors().getFirst().getDefaultMessage()))
+        );
+    }
+
+    // Handler for controller method parameter validation
+    @ExceptionHandler(HandlerMethodValidationException.class)
+    public ResponseEntity<ErrorResponse> handleValidationErrors(HandlerMethodValidationException e) {
         return ResponseEntity.badRequest().body(
                 new ErrorResponse(e.getClass().getName(), e.getMessage())
         );

@@ -74,7 +74,7 @@ public class EventService implements IEventService {
             eventEntity.setLocation(event.getLocation());
             eventEntity.setStatus(EventStatus.UPCOMING);
             eventEntity.setDate(event.getDate());
-            eventEntity.setTheme(this.themeService.getThemeById(event.getThemeId()));
+            eventEntity.setTheme(this.themeService.getThemeByIdForCreation(event.getThemeId()));
             return new EventDTO(this.eventRepository.save(eventEntity));
         }
     }
@@ -94,7 +94,7 @@ public class EventService implements IEventService {
 
             if (event.getStatus().equals(EventStatus.CANCELED) && eventEntity.getStatus().equals(EventStatus.UPCOMING)) {
                 eventEntity.setStatus(event.getStatus());
-                eventEntity.setTheme(this.themeService.getThemeById(event.getTheme()));
+                eventEntity.setTheme(this.themeService.getThemeByIdForCreation(event.getTheme()));
 
                 isCanceledOrUpdated = true;
 
@@ -105,11 +105,11 @@ public class EventService implements IEventService {
 
                 eventEntity.setLocation(event.getLocation());
                 eventEntity.setDate(event.getDate());
-                eventEntity.setTheme(this.themeService.getThemeById(event.getTheme()));
+                eventEntity.setTheme(this.themeService.getThemeByIdForCreation(event.getTheme()));
 
             } else if (event.getStatus().equals(EventStatus.COMPLETED) && eventEntity.getStatus().equals(EventStatus.UPCOMING)) {
                 eventEntity.setStatus(event.getStatus());
-                eventEntity.setTheme(this.themeService.getThemeById(event.getTheme()));
+                eventEntity.setTheme(this.themeService.getThemeByIdForCreation(event.getTheme()));
 
             } else {
                 throw new IllegalArgumentException("Event status and information cannot be changed if the status is already COMPLETED or CANCELED." +

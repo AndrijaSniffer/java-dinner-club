@@ -35,7 +35,7 @@ public class InvitationService implements IInvitationService {
 
     @Override
     public InvitationDTO createOrUpdateInvitation(CreateOrUpdateInvitationDTO invitationDTO) {
-        if(invitationDTO == null || invitationDTO.getGuestId() <= 0 || invitationDTO.getEventId() <= 0) {
+        if (invitationDTO == null || invitationDTO.getGuestId() <= 0 || invitationDTO.getEventId() <= 0) {
             throw new IllegalArgumentException("Invitation data is invalid");
         } else {
             Invitation invitation = new Invitation();
@@ -49,23 +49,6 @@ public class InvitationService implements IInvitationService {
             return new InvitationDTO(this.invitationRepo.save(invitation));
         }
     }
-
-//    @Override
-//    public InvitationDTO updateInvitation(CreateOrUpdateInvitationDTO invitationDTO) {
-//        if(invitationDTO == null || invitationDTO.getGuestId() <= 0 || invitationDTO.getEventId() <= 0) {
-//            throw new IllegalArgumentException("Invitation data is invalid");
-//        } else {
-//            Invitation invitation = new Invitation();
-//            invitation.setGuest(this.guestService.getGuestByIdForCreation(invitationDTO.getGuestId()));
-//            invitation.setEvent(this.eventService.getEventByIdForCreation(invitationDTO.getEventId()));
-//            invitation.setId(new InvitationId(invitationDTO.getGuestId(), invitationDTO.getEventId()));
-//            invitation.setAccepted(invitationDTO.isAccepted());
-//            invitation.setAttended(invitationDTO.isAttended());
-//            this.invitationRepo.save(invitation);
-//
-//            return new InvitationDTO(this.invitationRepo.save(invitation));
-//        }
-//    }
 
     @Override
     @Transactional
