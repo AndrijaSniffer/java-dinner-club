@@ -13,9 +13,11 @@ public interface IInvitationService {
 
     InvitationDTO getInvitationById(InvitationId id);
 
-    InvitationDTO createOrUpdateInvitation(CreateOrUpdateInvitationDTO invitationDTO);
+    List<InvitationDTO> getInvitationsByGuestIdAndAcceptedAndAttended(int id);
 
-//    InvitationDTO updateInvitation(CreateOrUpdateInvitationDTO invitationDTO);
+    List<InvitationDTO> getInvitationsByThemeIdAndStatusCOMPLETED(int id);
+
+    InvitationDTO createOrUpdateInvitation(CreateOrUpdateInvitationDTO invitationDTO);
 
     void deleteInvitation(InvitationId id);
 }

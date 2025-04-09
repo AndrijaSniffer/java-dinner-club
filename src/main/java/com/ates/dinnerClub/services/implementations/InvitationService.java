@@ -34,6 +34,16 @@ public class InvitationService implements IInvitationService {
     }
 
     @Override
+    public List<InvitationDTO> getInvitationsByGuestIdAndAcceptedAndAttended(int id) {
+        return this.invitationRepo.findAllByGuestIdAndAcceptedAndAttended(id).stream().map(InvitationDTO::new).toList();
+    }
+
+    @Override
+    public List<InvitationDTO> getInvitationsByThemeIdAndStatusCOMPLETED(int id) {
+        return this.invitationRepo.findAllByThemeIdAndStatusCOMPLETED(id).stream().map(InvitationDTO::new).toList();
+    }
+
+    @Override
     public InvitationDTO createOrUpdateInvitation(CreateOrUpdateInvitationDTO invitationDTO) {
         if (invitationDTO == null || invitationDTO.getGuestId() <= 0 || invitationDTO.getEventId() <= 0) {
             throw new IllegalArgumentException("Invitation data is invalid");
