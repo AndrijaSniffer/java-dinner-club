@@ -51,7 +51,7 @@ Follow these steps to set up and run the application locally:
 
 4. **Clone the Repository:**
    - Clone the project from GitHub:
-     git clone [](https://github.com/AndrijaSniffer/java-dinner-club.git)
+     git clone [https://github.com/AndrijaSniffer/java-dinner-club.git](https://github.com/AndrijaSniffer/java-dinner-club.git)
 
 5. **Configure Database Connection:**
    - Open `src/main/resources/application.properties` and add the following:
@@ -71,5 +71,5 @@ Follow these steps to set up and run the application locally:
     mvn spring-boot:run
   *Or start the application through an IDE such as IntelliJ.*
   
-  - The application will run on [](http://localhost:8080) by default.
-  - API Docummentation (Swagger) can be found at [](http://localhost:8080/swagger-ui/index.html#/)
+  - The application will run on [http://localhost:8080](http://localhost:8080) by default.
+  - API Docummentation (Swagger) can be found at [http://localhost:8080/swagger-ui/index.html#/](http://localhost:8080/swagger-ui/index.html#/)
