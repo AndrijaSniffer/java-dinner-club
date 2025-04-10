@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.time.OffsetDateTime;
 import java.util.List;
 
 @Repository
@@ -46,4 +47,20 @@ public interface IEventRepo extends JpaRepository<Event, Integer> {
             WHERE i.event_id = ?1 AND i.is_accepted = true
               AND i.guest_id = g.id AND i.event_id = e.id;""", nativeQuery = true)
     List<Guest> findAllGuestsThatAcceptedInvitationByEventId(int eventId);
+
+    @Query(value = """
+            select
+                e.id,
+                e.date,
+                e.location,
+                e.status,
+                e.theme_id
+            from
+                event e
+            where
+                e.date>= ?1
+                and e.date< ?2
+                and e.status = 'UPCOMING'
+            """, nativeQuery = true)
+    List<Event> findAllUpcomingEventsInTimeWindow(OffsetDateTime start, OffsetDateTime end);
 }

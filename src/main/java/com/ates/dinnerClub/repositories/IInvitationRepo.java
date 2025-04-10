@@ -13,6 +13,9 @@ import java.util.Optional;
 public interface IInvitationRepo extends JpaRepository<Invitation, Integer> {
     Optional<Invitation> findByGuestIdAndEventId(int guestId, int eventId);
 
+    @Query("SELECT i FROM Invitation i WHERE i.event.id = :eventId AND i.isAccepted = true")
+    List<Invitation> findAllByEventIdAndTimeFrame(@Param("eventId") int eventId);
+
     @Query("SELECT i FROM Invitation i WHERE i.guest.id = :guestId AND i.isAccepted = true AND i.isAttended = true")
     List<Invitation> findAllByGuestIdAndAcceptedAndAttended(@Param("guestId") int guestId);
 

@@ -13,6 +13,7 @@ import com.ates.dinnerClub.services.IThemeService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
@@ -63,6 +64,11 @@ public class EventService implements IEventService {
     @Override
     public List<GuestInvitationDTO> getGuestsWithoutAttendanceByEventId(int id) {
         return this.eventRepository.findAllGuestsWithoutAttendanceByEventId(id).stream().map(GuestInvitationDTO::new).toList();
+    }
+
+    @Override
+    public List<EventDTO> getUpcomingEventsInTimeWindow(OffsetDateTime start, OffsetDateTime end) {
+        return this.eventRepository.findAllUpcomingEventsInTimeWindow(start, end).stream().map(EventDTO::new).toList();
     }
 
     @Override

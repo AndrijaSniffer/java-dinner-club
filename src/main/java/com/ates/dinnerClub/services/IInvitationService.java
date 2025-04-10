@@ -17,6 +17,8 @@ public interface IInvitationService {
 
     List<InvitationDTO> getInvitationsByThemeIdAndStatusCOMPLETED(int id);
 
+    List<InvitationDTO> getInvitationsByEventIdAndTimeFrame(int id);
+
     InvitationDTO createOrUpdateInvitation(CreateOrUpdateInvitationDTO invitationDTO);
 
     void deleteInvitation(InvitationId id);

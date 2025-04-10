@@ -7,6 +7,7 @@ import com.ates.dinnerClub.classes.dto.guest.GuestInvitationDTO;
 import com.ates.dinnerClub.classes.enums.EventStatus;
 import com.ates.dinnerClub.entities.Event;
 
+import java.time.OffsetDateTime;
 import java.util.List;
 
 public interface IEventService {
@@ -21,6 +22,8 @@ public interface IEventService {
     List<GuestInvitationDTO> getGuestsByEventId(int id);
 
     List<GuestInvitationDTO> getGuestsWithoutAttendanceByEventId(int id);
+
+    List<EventDTO> getUpcomingEventsInTimeWindow(OffsetDateTime start, OffsetDateTime end);
 
     EventDTO createEvent(CreateEventDTO event);
 
