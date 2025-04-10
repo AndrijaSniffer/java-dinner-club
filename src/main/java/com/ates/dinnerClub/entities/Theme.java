@@ -20,6 +20,6 @@ public class Theme {
     @Column(unique = true, nullable = false)
     private String name;
 
-    @OneToMany(mappedBy = "theme", cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "theme", cascade = CascadeType.MERGE)
     private Set<Event> events;
 }

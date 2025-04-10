@@ -15,11 +15,11 @@ public class Invitation {
     @EmbeddedId
     private InvitationId id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne()
     @JoinColumn(name = "guest_id", insertable = false, updatable = false)
     private Guest guest;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne()
     @JoinColumn(name = "event_id", insertable = false, updatable = false)
     private Event event;
 

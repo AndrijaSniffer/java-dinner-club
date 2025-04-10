@@ -1,6 +1,7 @@
 package com.ates.dinnerClub.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -24,11 +25,12 @@ public class Guest {
     private String lastName;
 
     @Column(unique = true, nullable = false)
+    @Email
     private String email;
 
-    @Column()
+    @Column(nullable = false)
     private String phoneNumber;
 
-    @OneToMany(mappedBy = "guest", cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "guest", cascade = CascadeType.MERGE)
     private Set<Invitation> invitations;
 }

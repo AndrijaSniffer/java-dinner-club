@@ -12,6 +12,7 @@ import com.ates.dinnerClub.services.IEventService;
 import com.ates.dinnerClub.services.IThemeService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
@@ -67,6 +68,8 @@ public class EventService implements IEventService {
     }
 
     @Override
+    // Had to add transactional annotation to allow for lazy loading of the even entity (CronJob)
+    @Transactional(readOnly = true)
     public List<EventDTO> getUpcomingEventsInTimeWindow(OffsetDateTime start, OffsetDateTime end) {
         return this.eventRepository.findAllUpcomingEventsInTimeWindow(start, end).stream().map(EventDTO::new).toList();
     }

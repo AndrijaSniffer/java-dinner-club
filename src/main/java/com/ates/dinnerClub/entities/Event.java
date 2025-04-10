@@ -28,10 +28,10 @@ public class Event {
     @Enumerated(EnumType.STRING)
     private EventStatus status;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(optional = false)
     @JoinColumn(name = "theme_id", nullable = false)
     private Theme theme;
 
-    @OneToMany(mappedBy = "event", cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "event", cascade = CascadeType.MERGE)
     private Set<Invitation> invitations;
 }
