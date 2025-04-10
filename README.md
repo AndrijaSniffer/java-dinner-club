@@ -56,10 +56,14 @@ Follow these steps to set up and run the application locally:
 5. **Configure Database Connection:**
    - Open `src/main/resources/application.properties` and add the following:
        ```java
-       spring.datasource.url=jdbc:postgresql://localhost:5432/postgres
-       spring.datasource.username=postgres
-       spring.datasource.password=mysecretpassword
-  - Note: The default database is postgres. If your application uses a different database name, create it in PostgreSQL (e.g., using DBeaver or psql) and update the spring.datasource.url accordingly.
+       # Database config
+      spring.datasource.url=jdbc:postgresql://localhost:5432/postgres
+      spring.datasource.username=postgres
+      spring.datasource.password=mysecretpassword
+      spring.jpa.hibernate.ddl-auto=update
+      spring.jpa.properties.hibernate.jdbc.time_zone=UTC
+      spring.jpa.database-platform=org.hibernate.dialect.PostgreSQLDialect
+  - Note: The default database is postgres. If your application uses a different database name, create it in PostgreSQL (e.g., using DBeaver or psql) and update the spring.datasource.url accordingly. Same with your DB password.
 
 6. **Run the Application:**
   - Navigate to the project directory:
