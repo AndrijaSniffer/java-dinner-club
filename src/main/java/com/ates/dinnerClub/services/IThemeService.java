@@ -9,13 +9,13 @@ import java.util.List;
 public interface IThemeService {
     List<ThemeDTO> getAllThemes();
 
-    ThemeDTO getThemeById(int id);
+    ThemeDTO getThemeById(long id);
 
-    Theme getThemeByIdForCreation(int id);
+    Theme getThemeByIdForCreation(long id);
 
     ThemeDTO addTheme(CreateThemeDTO theme);
 
     ThemeDTO updateTheme(ThemeDTO theme);
 
-    void deleteTheme(int id);
+    void deleteTheme(long id);
 }

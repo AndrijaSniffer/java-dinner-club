@@ -51,7 +51,7 @@ public class ThemeController {
             @ApiResponse(responseCode = "404", description = "Theme not found", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
             @ApiResponse(responseCode = "500", description = "Internal server error", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
-    public ResponseEntity<ThemeDTO> getThemeById(@PathVariable @Min(1) int id) {
+    public ResponseEntity<ThemeDTO> getThemeById(@PathVariable @Min(1) long id) {
         return ResponseEntity.ok(this.themeService.getThemeById(id));
     }
 
@@ -89,10 +89,9 @@ public class ThemeController {
             description = "Deletes a theme by it's ID."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "204", description = "Default response, it returns no matter what"),
-            @ApiResponse(responseCode = "400", description = "Bad request", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "204", description = "Always returns"),
     })
-    public ResponseEntity<Void> deleteTheme(@PathVariable @Min(1) int id) {
+    public ResponseEntity<Void> deleteTheme(@PathVariable @Min(1) long id) {
         this.themeService.deleteTheme(id);
 
         return ResponseEntity.noContent().build();

@@ -71,7 +71,7 @@ public class AnalyticalService implements IAnalyticalService {
 
         // Guest section
         List<GuestDTO> guests = this.guestService.getAllGuests();
-        Map<Integer, List<InvitationDTO>> guestInvitationMap = new HashMap<>();
+        Map<Long, List<InvitationDTO>> guestInvitationMap = new HashMap<>();
         for (GuestDTO guest : guests) {
             List<InvitationDTO> guestInvitations = this.invitationService.getInvitationsByGuestIdAndAcceptedAndAttended(guest.getId());
             guestInvitationMap.put(guest.getId(), guestInvitations);
@@ -100,8 +100,8 @@ public class AnalyticalService implements IAnalyticalService {
                 // Filter invitations for this guest and this theme
                 List<InvitationDTO> eventThemeInvitations = themeInvitations.stream()
                         .filter(Util.distinctByKey(i -> i.getEvent().getId())).toList();
-                int howManyRows = eventThemeInvitations.size();
-                int currentCountedRows = 0;
+                long howManyRows = eventThemeInvitations.size();
+                long currentCountedRows = 0;
                 for (InvitationDTO invitation : themeInvitations) {
                     if (guestInvitations.contains(invitation)) {
                         currentCountedRows++;

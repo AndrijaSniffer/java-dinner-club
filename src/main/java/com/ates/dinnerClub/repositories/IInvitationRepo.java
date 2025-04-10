@@ -11,16 +11,16 @@ import java.util.Optional;
 
 @Repository
 public interface IInvitationRepo extends JpaRepository<Invitation, Integer> {
-    Optional<Invitation> findByGuestIdAndEventId(int guestId, int eventId);
+    Optional<Invitation> findByGuestIdAndEventId(long guestId, long eventId);
 
     @Query("SELECT i FROM Invitation i WHERE i.event.id = :eventId AND i.isAccepted = true")
-    List<Invitation> findAllByEventIdAndTimeFrame(@Param("eventId") int eventId);
+    List<Invitation> findAllByEventIdAndTimeFrame(@Param("eventId") long eventId);
 
     @Query("SELECT i FROM Invitation i WHERE i.guest.id = :guestId AND i.isAccepted = true AND i.isAttended = true")
-    List<Invitation> findAllByGuestIdAndAcceptedAndAttended(@Param("guestId") int guestId);
+    List<Invitation> findAllByGuestIdAndAcceptedAndAttended(@Param("guestId") long guestId);
 
     @Query("SELECT i FROM Invitation i WHERE i.event.theme.id = :themeId AND i.event.status = 'COMPLETED'")
-    List<Invitation> findAllByThemeIdAndStatusCOMPLETED(@Param("themeId") int themeId);
+    List<Invitation> findAllByThemeIdAndStatusCOMPLETED(@Param("themeId") long themeId);
 
-    void deleteByGuestIdAndEventId(int guestId, int eventId);
+    void deleteByGuestIdAndEventId(long guestId, long eventId);
 }

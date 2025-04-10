@@ -3,7 +3,7 @@ package com.ates.dinnerClub.services.implementations;
 import com.ates.dinnerClub.classes.dto.event.CreateEventDTO;
 import com.ates.dinnerClub.classes.dto.event.EventDTO;
 import com.ates.dinnerClub.classes.dto.event.UpdateEventDTO;
-import com.ates.dinnerClub.classes.dto.guest.GuestInvitationDTO;
+import com.ates.dinnerClub.classes.dto.guest.GuestInvitationRecord;
 import com.ates.dinnerClub.classes.enums.EventStatus;
 import com.ates.dinnerClub.entities.Event;
 import com.ates.dinnerClub.entities.Guest;
@@ -37,19 +37,13 @@ public class EventService implements IEventService {
     }
 
     @Override
-    public EventDTO getEventById(int id) {
-        if (id > 0) {
-            return this.eventRepository.findById(id).map(EventDTO::new).orElseThrow();
-        }
-        return null;
+    public EventDTO getEventById(long id) {
+        return this.eventRepository.findById((int) id).map(EventDTO::new).orElseThrow();
     }
 
     @Override
-    public Event getEventByIdForCreation(int id) {
-        if (id > 0) {
-            return this.eventRepository.findById(id).orElseThrow();
-        }
-        return null;
+    public Event getEventByIdForCreation(long id) {
+        return this.eventRepository.findById((int) id).orElseThrow();
     }
 
     @Override
@@ -58,13 +52,13 @@ public class EventService implements IEventService {
     }
 
     @Override
-    public List<GuestInvitationDTO> getGuestsByEventId(int id) {
-        return this.eventRepository.findAllGuestsByEventId(id).stream().map(GuestInvitationDTO::new).toList();
+    public List<GuestInvitationRecord> getGuestsByEventId(long id) {
+        return this.eventRepository.findAllGuestsByEventId(id);
     }
 
     @Override
-    public List<GuestInvitationDTO> getGuestsWithoutAttendanceByEventId(int id) {
-        return this.eventRepository.findAllGuestsWithoutAttendanceByEventId(id).stream().map(GuestInvitationDTO::new).toList();
+    public List<GuestInvitationRecord> getGuestsWithoutAttendanceByEventId(long id) {
+        return this.eventRepository.findAllGuestsWithoutAttendanceByEventId(id);
     }
 
     @Override
@@ -76,30 +70,29 @@ public class EventService implements IEventService {
 
     @Override
     public EventDTO createEvent(CreateEventDTO event) {
-        if (event == null || (event.getLocation() == null || event.getLocation().isEmpty() || event.getThemeId() <= 0)) {
-            throw new IllegalArgumentException("Event data is invalid");
-        } else {
+        if (event != null) {
             Event eventEntity = new Event();
             eventEntity.setLocation(event.getLocation());
             eventEntity.setStatus(EventStatus.UPCOMING);
             eventEntity.setDate(event.getDate());
             eventEntity.setTheme(this.themeService.getThemeByIdForCreation(event.getThemeId()));
             return new EventDTO(this.eventRepository.save(eventEntity));
+        } else {
+            throw new IllegalArgumentException("Event data is null");
         }
     }
 
     @Override
     public EventDTO updateEvent(UpdateEventDTO event) {
-        if (event == null || (event.getId() <= 0 || event.getLocation() == null || event.getLocation().isEmpty()
-                || event.getStatus() == null || event.getTheme() <= 0)) {
-            throw new IllegalArgumentException("Event data is invalid");
+        if (event == null) {
+            throw new IllegalArgumentException("Event data is null");
         } else {
             boolean isCanceledOrUpdated = false;
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy. HH:mm");
             String oldLocation = null;
             Date oldDate = null;
 
-            Event eventEntity = this.eventRepository.findById(event.getId()).orElseThrow();
+            Event eventEntity = this.eventRepository.findById((int) event.getId()).orElseThrow();
 
             if (event.getStatus().equals(EventStatus.CANCELED) && eventEntity.getStatus().equals(EventStatus.UPCOMING)) {
                 eventEntity.setStatus(event.getStatus());
@@ -203,9 +196,7 @@ public class EventService implements IEventService {
     }
 
     @Override
-    public void deleteEvent(int id) {
-        if (id > 0) {
-            this.eventRepository.deleteById(id);
-        }
+    public void deleteEvent(long id) {
+        this.eventRepository.deleteById((int) id);
     }
 }

@@ -23,14 +23,14 @@ public class ThemeService implements IThemeService {
     }
 
     @Override
-    public ThemeDTO getThemeById(int id) {
-        return this.themeRepo.findById(id).map(ThemeDTO::new).orElseThrow();
+    public ThemeDTO getThemeById(long id) {
+        return this.themeRepo.findById((int) id).map(ThemeDTO::new).orElseThrow();
     }
 
     @Override
-    public Theme getThemeByIdForCreation(int id) {
+    public Theme getThemeByIdForCreation(long id) {
         if (id > 0) {
-            return this.themeRepo.findById(id).orElseThrow();
+            return this.themeRepo.findById((int) id).orElseThrow();
         }
         return null;
     }
@@ -50,7 +50,7 @@ public class ThemeService implements IThemeService {
     @Override
     public ThemeDTO updateTheme(ThemeDTO theme) {
         if (theme != null) {
-            Theme themeEntity = this.themeRepo.findById(theme.getId()).orElseThrow();
+            Theme themeEntity = this.themeRepo.findById((int) theme.getId()).orElseThrow();
             themeEntity.setName(theme.getName());
 
             return new ThemeDTO(this.themeRepo.save(themeEntity));
@@ -60,7 +60,7 @@ public class ThemeService implements IThemeService {
     }
 
     @Override
-    public void deleteTheme(int id) {
-        this.themeRepo.deleteById(id);
+    public void deleteTheme(long id) {
+        this.themeRepo.deleteById((int) id);
     }
 }

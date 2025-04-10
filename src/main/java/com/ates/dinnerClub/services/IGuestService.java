@@ -9,9 +9,9 @@ import java.util.List;
 public interface IGuestService {
     List<GuestDTO> getAllGuests();
 
-    GuestDTO getGuestById(int id);
+    GuestDTO getGuestById(long id);
 
-    Guest getGuestByIdForCreation(int id);
+    Guest getGuestByIdForCreation(long id);
 
     GuestDTO getGuestByEmail(String email);
 
@@ -25,5 +25,5 @@ public interface IGuestService {
 
     GuestDTO updateGuest(GuestDTO guest);
 
-    void deleteGuest(int id);
+    void deleteGuest(long id);
 }

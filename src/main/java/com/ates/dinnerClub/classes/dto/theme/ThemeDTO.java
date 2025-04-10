@@ -20,7 +20,7 @@ public class ThemeDTO {
     )
     @NotNull
     @Min(1)
-    private int id;
+    private long id;
 
     @Schema(
             description = "Name of the theme (must be unique)",

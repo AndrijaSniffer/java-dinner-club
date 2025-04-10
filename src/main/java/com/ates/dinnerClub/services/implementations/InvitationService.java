@@ -34,25 +34,23 @@ public class InvitationService implements IInvitationService {
     }
 
     @Override
-    public List<InvitationDTO> getInvitationsByGuestIdAndAcceptedAndAttended(int id) {
+    public List<InvitationDTO> getInvitationsByGuestIdAndAcceptedAndAttended(long id) {
         return this.invitationRepo.findAllByGuestIdAndAcceptedAndAttended(id).stream().map(InvitationDTO::new).toList();
     }
 
     @Override
-    public List<InvitationDTO> getInvitationsByThemeIdAndStatusCOMPLETED(int id) {
+    public List<InvitationDTO> getInvitationsByThemeIdAndStatusCOMPLETED(long id) {
         return this.invitationRepo.findAllByThemeIdAndStatusCOMPLETED(id).stream().map(InvitationDTO::new).toList();
     }
 
     @Override
-    public List<InvitationDTO> getInvitationsByEventIdAndTimeFrame(int id) {
+    public List<InvitationDTO> getInvitationsByEventIdAndTimeFrame(long id) {
         return this.invitationRepo.findAllByEventIdAndTimeFrame(id).stream().map(InvitationDTO::new).toList();
     }
 
     @Override
     public InvitationDTO createOrUpdateInvitation(CreateOrUpdateInvitationDTO invitationDTO) {
-        if (invitationDTO == null || invitationDTO.getGuestId() <= 0 || invitationDTO.getEventId() <= 0) {
-            throw new IllegalArgumentException("Invitation data is invalid");
-        } else {
+        if (invitationDTO != null) {
             Invitation invitation = new Invitation();
             invitation.setGuest(this.guestService.getGuestByIdForCreation(invitationDTO.getGuestId()));
             invitation.setEvent(this.eventService.getEventByIdForCreation(invitationDTO.getEventId()));
@@ -62,6 +60,8 @@ public class InvitationService implements IInvitationService {
             this.invitationRepo.save(invitation);
 
             return new InvitationDTO(this.invitationRepo.save(invitation));
+        } else {
+            throw new IllegalArgumentException("Invitation is null");
         }
     }
 

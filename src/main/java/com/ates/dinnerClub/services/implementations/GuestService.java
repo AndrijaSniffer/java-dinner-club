@@ -23,19 +23,13 @@ public class GuestService implements IGuestService {
     }
 
     @Override
-    public GuestDTO getGuestById(int id) {
-        if (id > 0) {
-            return this.guestRepo.findById(id).map(GuestDTO::new).orElseThrow();
-        }
-        return null;
+    public GuestDTO getGuestById(long id) {
+        return this.guestRepo.findById((int) id).map(GuestDTO::new).orElseThrow();
     }
 
     @Override
-    public Guest getGuestByIdForCreation(int id) {
-        if (id > 0) {
-            return this.guestRepo.findById(id).orElseThrow();
-        }
-        return null;
+    public Guest getGuestByIdForCreation(long id) {
+        return this.guestRepo.findById((int) id).orElseThrow();
     }
 
     @Override
@@ -60,12 +54,7 @@ public class GuestService implements IGuestService {
 
     @Override
     public GuestDTO addGuest(CreateGuestDTO guest) {
-        if (guest == null || (guest.getFirstName() == null || guest.getFirstName().isEmpty()
-                || guest.getLastName() == null || guest.getLastName().isEmpty()
-                || guest.getEmail() == null || guest.getEmail().isEmpty()
-                || guest.getPhoneNumber() == null || guest.getPhoneNumber().isEmpty())) {
-            throw new IllegalArgumentException("Guest data is invalid");
-        } else {
+        if (guest != null) {
             Guest guestEntity = new Guest();
             guestEntity.setFirstName(guest.getFirstName());
             guestEntity.setFirstName(guest.getFirstName());
@@ -73,31 +62,29 @@ public class GuestService implements IGuestService {
             guestEntity.setEmail(guest.getEmail());
             guestEntity.setPhoneNumber(guest.getPhoneNumber());
             return new GuestDTO(this.guestRepo.save(guestEntity));
+
+        } else {
+            throw new IllegalArgumentException("Guest is null");
         }
     }
 
     @Override
     public GuestDTO updateGuest(GuestDTO guest) {
-        if (guest == null || (guest.getFirstName() == null || guest.getFirstName().isEmpty()
-                || guest.getLastName() == null || guest.getLastName().isEmpty()
-                || guest.getEmail() == null || guest.getEmail().isEmpty()
-                || guest.getPhoneNumber() == null || guest.getPhoneNumber().isEmpty())) {
-            throw new IllegalArgumentException("Guest data is invalid");
-        } else {
-            Guest guestEntity = this.guestRepo.findById(guest.getId()).orElseThrow();
+        if (guest != null) {
+            Guest guestEntity = this.guestRepo.findById((int) guest.getId()).orElseThrow();
 
             guestEntity.setFirstName(guest.getFirstName());
             guestEntity.setLastName(guest.getLastName());
             guestEntity.setEmail(guest.getEmail());
             guestEntity.setPhoneNumber(guest.getPhoneNumber());
             return new GuestDTO(this.guestRepo.save(guestEntity));
+        } else {
+            throw new IllegalArgumentException("Guest is null");
         }
     }
 
     @Override
-    public void deleteGuest(int id) {
-        if (id > 0) {
-            this.guestRepo.deleteById(id);
-        }
+    public void deleteGuest(long id) {
+        this.guestRepo.deleteById((int) id);
     }
 }
