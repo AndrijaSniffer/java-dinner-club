@@ -90,7 +90,7 @@ public class EventController {
         return ResponseEntity.ok(this.eventService.getGuestsByEventId(id));
     }
 
-    @GetMapping("/{id}/guests/without-attendance")
+    @GetMapping("/{id}/guests/withoutAttendance")
     @Operation(
             summary = "Get guests without attendance by event id",
             description = "Returns guests without attendance by event id."
