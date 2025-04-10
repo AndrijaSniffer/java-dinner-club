@@ -51,6 +51,7 @@ Follow these steps to set up and run the application locally:
 
 4. **Clone the Repository:**
    - Clone the project from GitHub:
+     ```git
      git clone [https://github.com/AndrijaSniffer/java-dinner-club.git](https://github.com/AndrijaSniffer/java-dinner-club.git)
 
 5. **Configure Database Connection:**
